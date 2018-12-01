@@ -21,12 +21,16 @@ The goals / steps of this project are the following:
 
 [image1]: ./images/sign-distribution.png "Distribution of signs data"
 [image2]: ./images/all-signs.png "All signs"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image3]: ./images/additional-signs.png "Additional traffic signs"
+[image4]: ./images/test1.png "Test on downloaded image 1"
+[image5]: ./images/test2.png "Test on downloaded image 2"
+[image6]: ./images/test3.png "Test on downloaded image 3"
+[image7]: ./images/test4.png "Test on downloaded image 4"
+[image8]: ./images/test5.png "Test on downloaded image 5"
+[image9]: ./images/all-signs-and-detail.png "All signs and detail"
+[featuremap1]: ./images/featuremap1.png "Featuremap for this image"
+[featuremap2]: ./images/featuremap2.png "Featuremap: Convolution layer 1"
+[featuremap3]: ./images/featuremap3.png "Featuremap: Convolution layer 2"
 
 ## Rubric Points
 
@@ -87,7 +91,9 @@ My final model consisted of the following layers:
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 `Code sections: In [11] - In [13]`
-##### Hyper-parameters
+
+I have used the LeNet architecture for training the neural network, along with Adam Optimizer, and the below values for hyperparameters:
+
 | Hyperparameter | Value |
 |------------------------------|-----------|
 | EPOCHS | 20 |
@@ -97,68 +103,111 @@ My final model consisted of the following layers:
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+I adopted an iterative process for coming up with optimum value for the hyperparameters. I could however use machine learning to tune them.
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+**My final model results were:**
+- training set accuracy of 99.9%
+- validation set accuracy of 97.0%
+- test set accuracy of 95.5%
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
- 
+**If an iterative approach was chosen:
+What was the first architecture that was tried and why was it chosen?**
+- For the ease of implementation
+
+** What were some problems with the initial architecture?**
+- Worked only on grayscale (single channel) image
+- A bit of overfitting. Test accuracy was very good, but validation accuracy was a bit low.
+- Low accuracy with lesser number of filters
+
+**How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.**
+- Updated the LeNet architecture to support color image to avoid information loss.
+- Introduced dropout to prevent overfitting.
+- Increase in number of filters in the convolution layers helped improve accuracy by a lot.
+
+**Which parameters were tuned? How were they adjusted and why?**
+- Epoch size: Started with an epoch size of 10. Increasing that to 20 gave me higher accuracy.
+- Batch size: Started with around 256. I settled at 64 as it gave me better accuracy.
+- keep_prob: Kept this at 0.6 (i.e. 40% dropout) to prevent overfitting. This helped me get a better accuracy on validation accuracy.
+- Learning rate: I started with 0.01 in which case the accuracy was less than 10%. But I got a much better accuracy at 0.001. Above this (say 0.0001, the accuracy deteriorated). So I settled at 0.001.
+
+**What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?**
+- **What architecture?**: LeNet
+- **Why did you believe it would be relevant to the traffic sign application?**: Because the problem is similar to character recognition (both are shape recognition).
+ - **How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well**? The accuracy on training set was excellent (around 100%). We were able to get pretty close in terms of accurancy on newer set of images (test and validation). That should be a good indication that the model is working well. 
 
 ### Test a Model on New Images
 
 #### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+I ran the test on around 10 German traffic sign images downloaded from the web.
+![Test the model on new images][image3]
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+**Image 1:**
+![Test image 1][image4]
+Challenges:
+- Not so challenging because of the unique shape
 
-The first image might be difficult to classify because ...
+**Image 2:**
+![Test image 2][image5]
+Challenges:
+- Shape and color similar to around 10-12 signs.
+
+**Image 3:**
+![Test image 3][image6]
+Challenges:
+- Shape and color similar to around 10-12 signs.
+- Fewer samples (only around 240)
+
+**Image 4:**
+![Test image 4][image7]
+Challenges:
+- Shape and color similar to other speed limit signs.
+
+**Image 5:**
+![Test image 5][image8]
+Challenges:
+- Shaped (round) like half a dozen other solid colored signs (though different color, and not strikingly similar)
+
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-Here are the results of the prediction:
+**Image 1:**
+![Test image 1][image4]
+The softmax value of prediction 1 (sign id 13) in this case 1.0, whereas that of the next contender is 2.34e-29. The reason it's that high is probably because of the shape of the sign which is triangle pointing down. Every other triangular sign is pointing up.
 
-| Image			        |     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+**Image 2:**
+![Test image 2][image5]
+In the above case, prediction1 (sign id 11) was almost 1e+28 times prediction2. In this case however, prediction1 / prediction2 is around 6e+2. And that makes sense because the second sign (sign id=27 -> Pedestrians) as well as the third sign (sign id 18 -> General caution) look pretty similar visually. All of them have a triangular sign with white background, red border and a black blob in the center.
 
+**Image 3:**
+![Test image 3][image6]
+This scenario is pretty similar to that of Image 2 above. The numbers, and contenders here are pretty similar as well.
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+**Image 4:**
+![Test image 4][image7]
+This sign is pretty close to the other speed limit signs (20km/h, 50km/h etc). But the softmax value here is pretty high (1e+14) compared to it's next contender. One of the reason could be the large number of samples in the training dataset (1930 training images for 30 km/h).
+
+**Image 5:**
+![Test image 5][image8]
+The model was not able to detect the sign correctly. So much so, it's not even in the top 5 predictions made by the neural network. I'm a little surprised by the top picks because the first pick (sign id 33 -> turn right ahead) is triangular in shape (instead of round with red background and a bold white horizontal bar), and the second pick (sign id 39 -> keep right) is blue in color.
+
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+Below are the 9 images of German traffic signs that I downloaded from web. Besides each image, I have listed the predictions made by the Neural Network model guessing the sign. The end of every row consists of softmax value. As you can see, the probability is mostly 1, or else > 0.99 for the first probability in every case. So I have not drawn visualizations as a bar chart (as it's pretty obvious).
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
-
-
-For the second image ... 
+![All images and detail][image9]
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+
+I have generated feature map for the below image:
+![Featuremap generated for this image][featuremap1]
+
+##### Visualization of feature maps in the first convolution layer (18 feature maps)
+![Feature map: Convolution layer 1][featuremap2]
+
+##### Visualization of feature maps in the first convolution layer (48 feature maps)
+![Feature map: Convolution layer 3][featuremap3]
 
 
