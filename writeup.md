@@ -71,11 +71,21 @@ def normalize(images):
 
 #### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-My final model consisted of the following layers:
+I have used LeNet model for the Neural Network architecture with below setup:
+
+- Number of layers: I have used 2 convolutional networks, followed by 3 fully-connected layers.
+
+- Number of filters: 18 5x5 filters in convolutional layer 1, and 48 5x5 filters in convolution layer 2.
+
+- Batch size: Performed several iterations, and settled on a batch size of 64.
+
+- Regularlization: I used dropout in two of the fully connected layers (other than the last) with a keep_prob value of 0.6.
+
+The layers of the model is shown in more depth below.
 
 | Layers | 
 |:-----------------------------------------------------------------:| 
-|Layer 1: Convolutional. Input = 32x32x1. Output = 28x28x18.| 
+|Layer 1: Convolutional. Input = 32x32x3. Output = 28x28x18.| 
 |Activation |
 | Pooling. Input = 28x28x18. Output = 14x14x18. |
 | Layer 2: Convolutional. Output = 10x10x48. |
@@ -84,6 +94,9 @@ My final model consisted of the following layers:
 | Pooling. Input = 10x10x48. Output = 5x5x48. |
 | Flatten. Input = 5x5x48. Output = 1200. |
 | Layer 3: Fully Connected. Input = 1200. Output = 360. |
+| Activation |
+| Dropout |
+| Layer 4: Layer 4: Fully Connected. Input = 360. Output = 252. |
 | Activation |
 | Dropout |
 | Layer 5: Fully Connected. Input = 252. Output = 43. |
